@@ -1,0 +1,8 @@
+export enum FunkoGenre {
+  ANIMATION = "Animation",
+  FILMS_AND_TV = "Film & TV",
+  VIDEOGAMES = "Videogames",
+  SPORTS = "Sports",
+  MUSIC = "Music",
+  ANIME = "Anime",
+}
