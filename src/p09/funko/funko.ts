@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { FunkoGenre } from "./genre";
-import { FunkoData } from "./json_data";
+import { FunkoData } from "./data";
 import { FunkoType } from "./type";
 
 export default class Funko {
