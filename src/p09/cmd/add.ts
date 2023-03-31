@@ -1,79 +1,26 @@
 import yargs from "yargs";
-import { isNonEmptyString, isPositive, isPositiveInteger } from "./common";
+import Funko from "../funko/funko";
+import Storage from "../funko/storage";
+import { FunkoType } from "../funko/type";
+import { defaultOptions, isNonEmptyString, isPositive, isPositiveInteger, ParsedOptions } from "./common";
 
 export function builder(yargs: yargs.Argv<unknown>) {
+  const opts = defaultOptions()
+  opts.exclusive.default = false
+  opts.id.default = ""
+  opts.number.default = 0
+  opts.special.default = ""
+  opts.type.default = FunkoType.POP
+  opts.description.demandOption = true
+  opts.franchise.demandOption = true
+  opts.genre.demandOption = true
+  opts.name.demandOption = true
+  opts.user.demandOption = true
+  opts.value.demandOption = true
+
   yargs
     .usage("$0 add <option>")
-    .options({
-      description: {
-        alias: "d",
-        demandOption: true,
-        describe: "Description of the funko",
-        type: "string",
-      },
-      exclusive: {
-        alias: "e",
-        default: false,
-        describe: "The funko is exclusive",
-        type: "boolean",
-      },
-      franchise: {
-        alias: "f",
-        demandOption: true,
-        describe: "Franchise of the funko",
-        type: "string",
-      },
-      genre: {
-        alias: "g",
-        choices: [
-          "Animation",
-          "Anime",
-          "Film & TV",
-          "Music",
-          "Sports",
-          "Videogames",
-        ],
-        demandOption: true,
-        describe: "Type of the funko",
-        type: "string",
-      },
-      id: {
-        alias: "i",
-        default: "",
-        describe: "ID of the funko",
-        type: "string",
-      },
-      name: {
-        alias: "n",
-        demandOption: true,
-        describe: "Name of the funko",
-        type: "string",
-      },
-      number: {
-        default: 0,
-        describe: "Number of the funko in the franchise",
-        type: "number",
-      },
-      special: {
-        alias: "s",
-        default: "",
-        describe: "Special features of the Funko",
-        type: "string",
-      },
-      type: {
-        alias: "t",
-        choices: ["Pop!", "Pop! Rides", "Vinyl Soda", "Vinyl Gold"],
-        demandOption: true,
-        describe: "Type of the funko",
-        type: "string",
-      },
-      value: {
-        alias: "v",
-        demandOption: true,
-        describe: "Market value of the funko, in EUR",
-        type: "number",
-      },
-    })
+    .options(opts)
     .check(argv => {
       isNonEmptyString(argv, "name")
       isNonEmptyString(argv, "description")
@@ -85,5 +32,19 @@ export function builder(yargs: yargs.Argv<unknown>) {
 }
 
 export function handler(argv: yargs.ArgumentsCamelCase<unknown>) {
-  console.log(argv)
+  const input = argv as unknown as ParsedOptions
+
+  const s = new Storage(input.path)
+  s.add(input.user as string, new Funko(
+    input.id,
+    input.name,
+    input.description,
+    input.type,
+    input.genre,
+    input.franchise,
+    input.number,
+    input.exclusive,
+    input.special,
+    input.value
+  ))
 }

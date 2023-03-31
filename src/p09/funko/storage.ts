@@ -3,7 +3,7 @@ import path from "node:path";
 import Funko from "./funko";
 
 export default class Storage {
-  constructor(private dirPath = "funkos") {}
+  constructor(private dirPath: string) {}
 
   add(user: string, f: Funko): void {
     fs.writeFileSync(
