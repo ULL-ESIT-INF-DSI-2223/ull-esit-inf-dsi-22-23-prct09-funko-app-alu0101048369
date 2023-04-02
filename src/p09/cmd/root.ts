@@ -3,6 +3,7 @@ import { hideBin } from "yargs/helpers"
 import * as add from "./add"
 import * as list from "./list"
 import * as read from "./read"
+import * as remove from "./remove"
 
 export default function cmd(argv: string[]) {
   yargs(hideBin(argv))
@@ -14,6 +15,7 @@ export default function cmd(argv: string[]) {
     .command("add", "Add a new funko to the user list", add.builder, add.handler)
     .command("list", "List all the funkos in a user list", list.builder, list.handler)
     .command("read", "Read all the properties of a funko", read.builder, read.handler)
+    .command("remove", "Remove a funko from the database", remove.builder, remove.handler)
     .options({
       h: {
         alias: "help",
