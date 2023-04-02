@@ -1,2 +1,12 @@
+import chalk from "chalk";
 import cmd from "./cmd/root";
-cmd(process.argv);
+import { isError } from "./utils/errors";
+try {
+  cmd(process.argv);
+} catch (e) {
+  if (isError(e)) {
+    console.log(chalk.red(e.message))
+  } else {
+    console.error(e)
+  }
+}

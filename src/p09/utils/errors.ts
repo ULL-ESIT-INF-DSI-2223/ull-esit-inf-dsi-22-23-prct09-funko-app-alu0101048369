@@ -1,3 +1,7 @@
+interface Error {
+  message: string
+}
+
 interface SystemError {
   code: string
   errno: number
@@ -10,10 +14,10 @@ interface SystemError {
   port?: number
 }
 
+export function isError(e: unknown): e is Error {
+  return typeof e === "object" && e !== null && "message" in e
+}
+
 export function isSystemError(e: unknown): e is SystemError {
-  return typeof e === "object" && e !== null
-    && "code" in e
-    && "errno" in e
-    && "message" in e
-    && "syscall" in e
+  return isError(e) && "code" in e && "errno" in e && "syscall" in e
 }
