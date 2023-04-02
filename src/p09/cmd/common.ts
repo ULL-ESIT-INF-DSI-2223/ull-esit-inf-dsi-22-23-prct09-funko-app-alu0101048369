@@ -81,12 +81,6 @@ export function defaultOptions(): { [key: string]: yargs.Options } {
       describe: "Number of the funko in the franchise",
       type: "number",
     },
-    path: {
-      alias: "p",
-      describe: "Path to the funko's database",
-      default: "funkos",
-      type: "string"
-    },
     special: {
       alias: "s",
       describe: "Special features of the Funko",
