@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { isSystemError } from "../utils/errors";
 import Funko from "./funko";
 
 export default class Storage {
@@ -14,7 +15,18 @@ export default class Storage {
 
   list(user: string): Funko[] {
     const userDir = path.join(this.dirPath, user)
-    return fs.readdirSync(userDir).reduce((acc, filename) => {
+    
+    let filenames: string[]
+    try {
+      filenames = fs.readdirSync(userDir)
+    } catch (e) {
+      if (isSystemError(e) && e.syscall === "scandir" && e.code === "ENOENT") {
+        return []
+      }
+      throw e
+    }
+
+    return filenames.reduce((acc, filename) => {
       if (!filename.endsWith(".json")) {
         return acc;
       }

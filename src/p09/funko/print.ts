@@ -8,6 +8,11 @@ export function printUserFunkoCollection(user: string, funkos: Funko[]): void {
   }
 
   green(`${user} Funko Pop Collection`)
+  if (funkos.length < 1) {
+    separator()
+    green("<no funkos>")
+    return
+  }
   funkos.forEach(f => {
     separator()
     printFunko(f, maxMarketValue)
