@@ -8,6 +8,7 @@ export function builder(yargs: yargs.Argv<unknown>) {
   const opts = defaultOptions()
   opts.exclusive.default = false
   opts.id.default = ""
+  opts.id.defaultDescription = "<random>"
   opts.number.default = 0
   opts.special.default = ""
   opts.type.default = FunkoType.POP
@@ -15,7 +16,6 @@ export function builder(yargs: yargs.Argv<unknown>) {
   opts.franchise.demandOption = true
   opts.genre.demandOption = true
   opts.name.demandOption = true
-  opts.user.demandOption = true
   opts.value.demandOption = true
 
   yargs

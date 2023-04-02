@@ -98,11 +98,6 @@ export function defaultOptions(): { [key: string]: yargs.Options } {
       describe: "Type of the funko",
       type: "string",
     },
-    user: {
-      alias: "u",
-      describe: "Owner of the funko",
-      type: "string"
-    },
     value: {
       alias: "v",
       describe: "Market value of the funko, in EUR",

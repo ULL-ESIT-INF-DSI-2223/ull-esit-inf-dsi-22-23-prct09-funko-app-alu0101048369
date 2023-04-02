@@ -7,7 +7,7 @@
     "build": "rm -Rf dist && tsc",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage/lcov.info",
     "doc": "typedoc",
-    "start": "tsc-watch --onSuccess 'node dist/p09/index.js add -d Waifu -f DitF -g Anime -n ZeroTwo --number 2 -t Pop! -v 123'",
+    "start": "tsc-watch --onSuccess 'node dist/p09 add -d Waifu -f DitF -g Anime -n ZeroTwo --number 2 -t Pop! -v 123'",
     "test": "NODE_ENV=test mocha",
     "watch": "NODE_ENV=test mocha --watch --watch-extensions ts"
   },
