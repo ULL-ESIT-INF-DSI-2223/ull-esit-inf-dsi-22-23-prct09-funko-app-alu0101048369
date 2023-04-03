@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import cmd from "./cmd/root";
 import { isError } from "./utils/errors";
+import { unlock } from "./utils/lockfile";
 try {
   cmd(process.argv);
 } catch (e) {
@@ -10,3 +11,4 @@ try {
     console.error(e)
   }
 }
+unlock()

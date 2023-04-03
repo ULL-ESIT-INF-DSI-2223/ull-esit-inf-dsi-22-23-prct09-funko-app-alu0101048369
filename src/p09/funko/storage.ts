@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { isSystemError } from "../utils/errors";
+import { lock } from "../utils/lockfile";
 import Funko from "./funko";
 
 export default class Storage {
-  constructor(private dirPath: string) {}
+  constructor(private dirPath: string) {
+    lock(dirPath)
+  }
 
   add(user: string, f: Funko): void {
     fs.writeFileSync(
