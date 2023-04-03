@@ -33,5 +33,5 @@ export function handler(argv: yargs.ArgumentsCamelCase<unknown>) {
   if (argv.value !== undefined)     fieldsToChange.set("marketValue", argv.value)
 
   const s = new Storage((argv.path as string))
-  s.update((argv.user as string), (argv.id as string), new Map())
+  s.update((argv.user as string), (argv.id as string), fieldsToChange)
 }
