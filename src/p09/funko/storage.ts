@@ -14,7 +14,8 @@ export default class Storage {
    * @param dirPath Directory to store the funkos.
    */
   constructor(private dirPath: string) {
-    lock(dirPath) // TODO need to create parent dir
+    fs.mkdirSync(dirPath, {recursive: true})
+    lock(dirPath)
   }
 
   /**
@@ -23,8 +24,10 @@ export default class Storage {
    * @param f Funko to add to the storage.
    */
   add(user: string, f: Funko): void {
+    const userDir = path.join(this.dirPath, user)
+    fs.mkdirSync(userDir, {recursive: true})
     fs.writeFileSync(
-      path.join(this.createUserDir(user), `${f.id}.json`),
+      path.join(userDir, `${f.id}.json`),
       JSON.stringify(f),
       {flag: "wx"})
   }
@@ -92,19 +95,5 @@ export default class Storage {
     const rawData = JSON.parse(fs.readFileSync(fPath, "utf-8"))
     Array.from(fields.entries()).forEach(field => rawData[field[0]] = field[1])
     fs.writeFileSync(fPath, JSON.stringify(rawData))
-  }
-
-  /**
-   * Creates the user directory for the user provided.
-   * @param user User owner of the directory.
-   * @returns Path of the directory created.
-   */
-  private createUserDir(user: string): string {
-    if (user === "") {
-      throw new Error("user cannot be empty string");
-    }
-    const userDir = path.join(this.dirPath, user)
-    fs.mkdirSync(userDir, {recursive: true})
-    return userDir
   }
 }
