@@ -6,7 +6,11 @@ import * as read from "./read"
 import * as remove from "./remove"
 import * as update from "./update"
 
-export default function cmd(argv: string[]) {
+/**
+ * cmd parses the program arguments and executes the code of the program.
+ * @param argv Args of the program.
+ */
+export default function cmd(argv: string[]): void {
   yargs(hideBin(argv))
     .scriptName("FunkoApp")
     .strict()

@@ -1,3 +1,6 @@
+/**
+ * FunkoType contains all the valid types for funkos.
+ */
 export enum FunkoType {
   POP = "Pop!",
   POP_RIDES = "Pop! Rides",

@@ -4,6 +4,10 @@ import Storage from "../funko/storage";
 import { FunkoType } from "../funko/type";
 import { defaultOptions, isNonEmptyString, isPositive, isPositiveInteger, ParsedOptions } from "./common";
 
+/**
+ * builder is the builder function for the add command
+ * @param yargs Yargs Arguments
+ */
 export function builder(yargs: yargs.Argv<unknown>) {
   const opts = defaultOptions()
   opts.exclusive.default = false
@@ -19,7 +23,7 @@ export function builder(yargs: yargs.Argv<unknown>) {
   opts.value.demandOption = true
 
   yargs
-    .usage("$0 add <option>")
+    .usage("$0 add <options>")
     .options(opts)
     .check(argv => {
       isNonEmptyString(argv, "name")
@@ -31,6 +35,10 @@ export function builder(yargs: yargs.Argv<unknown>) {
     })
 }
 
+/**
+ * handler is the handler executed after a valid add command
+ * @param argv Parsed Yargs arguments
+ */
 export function handler(argv: yargs.ArgumentsCamelCase<unknown>) {
   const input = argv as unknown as ParsedOptions
 

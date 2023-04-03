@@ -2,12 +2,16 @@ import yargs from "yargs";
 import Storage from "../funko/storage";
 import { defaultOptions, isNonEmptyString, isPositive, isPositiveInteger } from "./common";
 
+/**
+ * builder is the builder function for the update command
+ * @param yargs Yargs Arguments
+ */
 export function builder(yargs: yargs.Argv<unknown>) {
   const opts = defaultOptions()
   opts.id.demandOption = true
 
   yargs
-    .usage("$0 add <option>")
+    .usage("$0 update <options>")
     .options(opts)
     .check(argv => {
       isNonEmptyString(argv, "id")
@@ -20,6 +24,10 @@ export function builder(yargs: yargs.Argv<unknown>) {
     })
 }
 
+/**
+ * handler is the handler executed after a valid update command
+ * @param argv Parsed Yargs arguments
+ */
 export function handler(argv: yargs.ArgumentsCamelCase<unknown>) {
   const fieldsToChange = new Map<string, unknown>()
   if (argv.description)             fieldsToChange.set("description", argv.description)
