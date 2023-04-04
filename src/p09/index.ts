@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import cmd from "./cmd/root";
+import cmd from "./cmd";
 import { isError } from "./utils/errors";
 import { unlock } from "./utils/lockfile";
 try {
