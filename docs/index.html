@@ -12,7 +12,97 @@
 <div class="col-8 col-content">
 <div class="tsd-page-title">
 <h2>pe102</h2></div>
-<div class="tsd-panel tsd-typography"><p><a href="https://classroom.github.com/a/fmDo8ROl"><img src="https://classroom.github.com/assets/deadline-readme-button-8d59dc4de5201274e310e4c54b9627a8934c3b88527886e3b421487c677d23eb.svg" alt="Review Assignment Due Date"></a></p>
+<div class="tsd-panel tsd-typography">
+<a href="#práctica-9---aplicación-de-registro-de-funko-pops" id="práctica-9---aplicación-de-registro-de-funko-pops" style="color: inherit; text-decoration: none;">
+  <h1>Práctica 9 - Aplicación de registro de Funko Pops</h1>
+</a>
+<p><a href="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369/actions/workflows/testing.yml"><img src="https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369/actions/workflows/testing.yml/badge.svg" alt="Tests"></a>
+<a href="https://coveralls.io/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369?branch=main"><img src="https://coveralls.io/repos/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369/badge.svg?branch=main" alt="Coverage Status"></a>
+<a href="https://sonarcloud.io/summary/new_code?id=ULL-ESIT-INF-DSI-2223_ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369"><img src="https://sonarcloud.io/api/project_badges/measure?project=ULL-ESIT-INF-DSI-2223_ull-esit-inf-dsi-22-23-prct09-funko-app-alu0101048369&metric=alert_status" alt="Quality Gate Status"></a></p>
+<ul>
+<li>Miguel Dorta Rodríguez</li>
+<li>Miércoles 5 de abril de 2023</li>
+<li>Desarrollo de Sistemas Informáticos</li>
+<li>Grado en Ingeniería Informática</li>
+<li>Universidad de La Laguna</li>
+</ul>
+
+<a href="#introducción" id="introducción" style="color: inherit; text-decoration: none;">
+  <h2>Introducción</h2>
+</a>
+<p>Para esta práctica se nos pedía realizar una aplicación de registro de Funkos, para familizarizarnos con las APIs de NodeJS para el manejo de archivos, la línea de comandos, y acostumbarnos a usar dependencias para agilizar nuestro trabajo. Además de esto se nos ha pedido durante la sesión de prácticas realizar un conjunto de clases que simulen las funciones de <code>map</code> y <code>reduce</code> de un array numérico, pero siguiendo el patrón de template method, para familiarizarnos con nuevos patrones de diseño.</p>
+
+<a href="#ejercicios" id="ejercicios" style="color: inherit; text-decoration: none;">
+  <h2>Ejercicios</h2>
+</a>
+<p>A continuación se describirán los diferentes ejercicios, el de la aplicación de registro de Funko Pops y el realizado durante la sesión de prácticas.</p>
+
+<a href="#aplicación-de-registro-de-funko-pops" id="aplicación-de-registro-de-funko-pops" style="color: inherit; text-decoration: none;">
+  <h3>Aplicación de registro de Funko Pops</h3>
+</a>
+<p>Para este ejercicio se nos pedía realizar una aplicación de registro y manejo de Funko Pops. Esta aplicación no debe ser interactiva, usando únicamente argumentos de programa para leer los datos, y debe de implementar funcionalidad básica de manejo de objetos (añadir, modificar, eliminar, listar y mostrar). Además se pedía que almacenace la información en un directorio que contiene una carpeta por usuario, y un archivo JSON por cada Funko Pop. Se pedía también que la aplicación mostrase toda salida ordinaria en color verde, y los errores en rojo. Por último, se pedía que múltiples usuarios pudiesen interaccionar con la aplicación pero no de forma simultánea.</p>
+<p>Para realizar el desarrollo de esta aplicación he decidido dividirla en dos partes (modelo y parseo de argumentos), además de una parte extra de utilidades.</p>
+
+<a href="#modelo" id="modelo" style="color: inherit; text-decoration: none;">
+  <h4>Modelo</h4>
+</a>
+<p>La parte de esta aplicación que he llamado modelo es la que contiene la lógica principal del programa. Se encuentra en la carpeta <code>src/p09/funko</code>, y contiene lo siguiente:</p>
+<ul>
+<li><strong>Clase Funko:</strong> Representa los datos asociados a cada funko.</li>
+<li><strong>Clase Storage:</strong> Representa un almacenador y manejador de funkos en disco. Su función es ofrecer métodos para trabajar con ellos. Cuando se crea un objeto de este tipo se bloquea el repositorio para cumplir el requisito de que múltiples usuarios no pueden trabajar de forma simultánea en él.</li>
+<li><strong>Enums:</strong> FunkoGenre y FunkoType, representan los valores posibles que pueden tomar los campos <code>genre</code> y <code>type</code> en los Funkos.</li>
+<li><strong>Funciones de imprimir:</strong> <code>printFunko</code> y <code>printUserFunkoCollection</code>, ofrecen una forma sencilla de imprimir funkos o colecciones de funkos. Aquí se implementa el requisito de imprimir el valor de mercado en diferentes colores según su valor. El ejercicio pedía realizar al menos 4 rangos, pero he decidido hacer un espectro completo que va desde rojo para 0 hasta verde para el funko de mayor valor en una colección, ofreciendo a efectos prácticos 256 rangos.</li>
+<li><strong>Interfaz FunkoData:</strong> Representa los datos de los Funkos en los archivos JSON. Es la misma interfaz que la clase Funko omitiendo el campo <code>id</code> y los métodos.</li>
+</ul>
+
+<a href="#parseo-de-argumentos" id="parseo-de-argumentos" style="color: inherit; text-decoration: none;">
+  <h4>Parseo de argumentos</h4>
+</a>
+<p>Esta parte de la aplicación se encarga de tomar los argumentos con los que ha sido lanzado, procesarlos, y ejecutar lo que se ha solicitado a través de ellos. Se encuentra en la carpeta <code>src/p09/cmd</code>, y contiene una estructura de archivos que enlaza 1:1 con los comandos de la aplicación:</p>
+<ul>
+<li><strong>index.ts</strong>: Contiene el comando vacío de la aplicación. Si consideramos los comandos como un árbol, este es la raíz.</li>
+<li><strong>(add/list/read/remove/update).ts</strong>: Contiene el constructor y generador de cada comando.</li>
+<li><strong>common.ts</strong>: Contiene funciones y tipos comunes a múltiples comandos.</li>
+</ul>
+<p>Como nota a destacar, he decidido usar un acercamiento parecido a las herramientas de los sistemas UNIX o UNIX-like, en la que cuando una operación se realiza correctamente no se ofrece ningún output, reservándose este para errores o funcionalidades que requieran output (como listar o mostrar).</p>
+
+<a href="#utilidades" id="utilidades" style="color: inherit; text-decoration: none;">
+  <h4>Utilidades</h4>
+</a>
+<p>Esta parte de la aplicación ofrece funciones que simplemente agilizan el manejo de cosas. Se encuentra en la carpeta <code>src/p09/utils</code> y contiene los siguientes archivos:</p>
+<ul>
+<li><strong>errors.ts</strong>: Contiene interfaces y funciones para agilizar la detección y manejo de Errors y SystemErrors en TypeScript.</li>
+<li><strong>lockfile.ts</strong>: Contiene funciones y variables para facilitar el bloqueo del directorio. Esta es la única parte del código que infringe fragrantemente los principios SOLID, pues contiene una variable global (no expuesta), pero esto facilita muchísimo el diseño de esta parte de la aplicación. Además otra parte criticable de este código es que el método de bloqueo de archivos es muy débil y está sujeto a &quot;quedarse colgado&quot; si un programa acaba de forma prematura sin eliminar el archivo. Hay formas más inteligentes de hacer esto, <a href="https://github.com/Miguel-Dorta/si">formas que he implementado por mi cuenta con anterioridad en otros lenguajes</a>, pero veía excesivo usar llamadas al sistema para este punto cuando probablemente la mayoría de mis compañeros habrán pasado por alto este punto y, los que no, probablemente no implementarán una solución más compleja que esta.</li>
+</ul>
+
+<a href="#pe102---mapreduce" id="pe102---mapreduce" style="color: inherit; text-decoration: none;">
+  <h3>PE102 - MapReduce</h3>
+</a>
+<p>En esta sesión de prácticas se nos pedía realizar, siguiendo el patrón de diseño template method, una clase abstracta para implementar funcionalidades similares a <code>map</code> y <code>reduce</code> para arrays numéricos, y esta clase ha de servir de base para las otras que hagan implementaciones de sus métodos. La clase base la he llamado <code>MapReduce</code> y únicamente contiene los siguientes métodos:</p>
+<ul>
+<li><strong>reduce:</strong> método abstracto para implementar en las subclases.</li>
+<li><strong>map:</strong> método que realiza la operación de mapeo en un array numérico. Ejecuta el hook <code>mapPreProcessListHook</code> antes de empezar a realizarlo, el método <code>mapFn</code> con cada elemento, y el hook <code>mapPostProcessListHook</code> después de realizarlo.</li>
+<li><strong>mapFn:</strong> método que se realizará con cada elemento en las operaciones de <code>map</code>. Está pensado para ser sobreescrito por clases hijas y su comportamiento por defecto es devolver el mismo número que se ha proporcionado.</li>
+<li><strong>mapPreProcessListHook:</strong> hook que se ejecutará antes de hacer la operación de mapeo en un array numérico. Está pensado para ser sobreescrito por clases hijas y su comportamiento por defecto es no modificar el array.</li>
+<li><strong>mapPostProcessListHook:</strong> hook que se ejecutará después de hacer la operación de mapeo en un array numérico. Está pensado para ser sobreescrito por clases hijas y su comportamiento por defecto es no modificar el array.</li>
+</ul>
+<p>A partir de esta clase se crean subclases que la especializan. En este caso se ha decidido implementar las siguientes:</p>
+<ul>
+<li><strong>AddMapReduce:</strong> En la operación de <code>map</code> suma 1 a cada elemento, y en la operación de <code>reduce</code> los suma todos al valor inicial.</li>
+<li><strong>SubMapReduce:</strong> En la operación de <code>map</code> resta 1 a cada elemento, y en la operación de <code>reduce</code> los resta todos al valor inicial.</li>
+<li><strong>ProdMapReduce:</strong> En la operación de <code>map</code> multiplica por 2 a cada elemento, y en la operación de <code>reduce</code> multiplica el valor inicial con todos.</li>
+<li><strong>DivMapReduce:</strong> En la operación de <code>map</code> divide entre 2 a cada elemento, y en la operación de <code>reduce</code> divide el valor inicial con todos.</li>
+</ul>
+
+<a href="#dificultades-encontradas" id="dificultades-encontradas" style="color: inherit; text-decoration: none;">
+  <h2>Dificultades encontradas</h2>
+</a>
+<p>La mayor dificultad encontrada en esta práctica ha sido familiarizarme con las nuevas librerías que estamos usando, especialmente con <code>yargs</code> pues, como consecuencia de lo potente y flexible que es, tiene una documentación bastante extensa. Otra de las mayores dificultades encontradas ha sido el parseo de errores de Node pues, al menos para Node 14, no devuelve errores que sean instancias de ninguna clase, y además la API <code>node:fs</code> no expone públicamente sus tipos de error, por lo que he tenido que implementarme funciones para manejarlos de forma cómoda.</p>
+
+<a href="#conclusión" id="conclusión" style="color: inherit; text-decoration: none;">
+  <h2>Conclusión</h2>
+</a>
+<p>Gracias a esta práctica hemos podido familiarizarnos con las APIs de NodeJS para el manejo de archivos, además de haber aprendido de forma práctica a hacer una implementación de clases que siga el patrón de diseño template method. A parte de esto, a mí personalmente me ha servido para familiarizarme con herramientas para el diseño de aplicaciones por terminal como <code>chalk</code> y <code>yargs</code>, que sin duda me serán muy útiles para el diseño de futuras aplicaciones.</p>
 </div></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
@@ -35,11 +125,27 @@
 <ul>
 <li class="current selected"><a href="modules.html">pe102</a>
 <ul>
-<li class="tsd-kind-module"><a href="modules/add_map_reduce.html">add_<wbr/>map_<wbr/>reduce</a></li>
-<li class="tsd-kind-module"><a href="modules/div_map_reduce.html">div_<wbr/>map_<wbr/>reduce</a></li>
-<li class="tsd-kind-module"><a href="modules/map_reduce.html">map_<wbr/>reduce</a></li>
-<li class="tsd-kind-module"><a href="modules/prod_map_reduce.html">prod_<wbr/>map_<wbr/>reduce</a></li>
-<li class="tsd-kind-module"><a href="modules/sub_map_reduce.html">sub_<wbr/>map_<wbr/>reduce</a></li></ul></li></ul></div></details></nav></div></div>
+<li class="tsd-kind-module"><a href="modules/p09.html">p09</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd.html">p09/cmd</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_add.html">p09/cmd/add</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_common.html">p09/cmd/common</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_list.html">p09/cmd/list</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_read.html">p09/cmd/read</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_remove.html">p09/cmd/remove</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_cmd_update.html">p09/cmd/update</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_data.html">p09/funko/data</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_funko.html">p09/funko/funko</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_genre.html">p09/funko/genre</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_print.html">p09/funko/print</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_storage.html">p09/funko/storage</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_funko_type.html">p09/funko/type</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_utils_errors.html">p09/utils/errors</a></li>
+<li class="tsd-kind-module"><a href="modules/p09_utils_lockfile.html">p09/utils/lockfile</a></li>
+<li class="tsd-kind-module"><a href="modules/pe102_add_map_reduce.html">pe102/add_<wbr/>map_<wbr/>reduce</a></li>
+<li class="tsd-kind-module"><a href="modules/pe102_div_map_reduce.html">pe102/div_<wbr/>map_<wbr/>reduce</a></li>
+<li class="tsd-kind-module"><a href="modules/pe102_map_reduce.html">pe102/map_<wbr/>reduce</a></li>
+<li class="tsd-kind-module"><a href="modules/pe102_prod_map_reduce.html">pe102/prod_<wbr/>map_<wbr/>reduce</a></li>
+<li class="tsd-kind-module"><a href="modules/pe102_sub_map_reduce.html">pe102/sub_<wbr/>map_<wbr/>reduce</a></li></ul></li></ul></div></details></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="assets/main.js"></script></body></html>
