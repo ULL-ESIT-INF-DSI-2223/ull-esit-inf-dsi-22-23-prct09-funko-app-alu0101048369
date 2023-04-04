@@ -1,14 +1,14 @@
 /**
  * Error interface represents a generic Error object.
  */
-interface Error {
+export interface Error {
   message: string
 }
 
 /**
  * SystemError represents the unexposed SystemError of NodeJS.
  */
-interface SystemError {
+export interface SystemError {
   code: string
   errno: number
   message: string

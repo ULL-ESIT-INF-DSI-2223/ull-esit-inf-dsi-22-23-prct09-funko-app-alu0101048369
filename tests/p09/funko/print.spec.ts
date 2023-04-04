@@ -3,6 +3,9 @@ import { printFunko, printUserFunkoCollection } from "../../../src/p09/funko/pri
 import Funko from "../../../src/p09/funko/funko"
 import { FunkoType } from "../../../src/p09/funko/type"
 import { FunkoGenre } from "../../../src/p09/funko/genre"
+import chalk from "chalk"
+
+chalk.level = 3
 
 describe("FunkoPrinter", () => {
   it("Test printFunko with no maxMarketValue", () => {
