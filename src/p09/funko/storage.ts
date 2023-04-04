@@ -40,14 +40,16 @@ export default class Storage {
   list(user: string): Funko[] {
     const userDir = path.join(this.dirPath, user)
     
-    let filenames: string[]
+    let filenames: string[];
     try {
-      filenames = fs.readdirSync(userDir)
+      filenames = fs.readdirSync(userDir);
     } catch (e) {
+      /* istanbul ignore else */
       if (isSystemError(e) && e.syscall === "scandir" && e.code === "ENOENT") {
-        return []
+        return [];
+      } else {
+        throw e;
       }
-      throw e
     }
 
     return filenames.reduce((acc, filename) => {

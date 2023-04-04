@@ -29,7 +29,7 @@ export function printUserFunkoCollection(user: string, funkos: Funko[]): void {
  * @param f Funko to print.
  * @param maxMarketValue Max market value of the collection to generate the price color.
  */
-export function printFunko(f: Funko, maxMarketValue?: number): void {
+export function printFunko(f: Funko, maxMarketValue = Infinity): void {
   green(`ID:               ${f.id}`)
   green(`Name:             ${f.name}`)
   green(`Description:      ${f.description}`)
@@ -49,7 +49,7 @@ export function printFunko(f: Funko, maxMarketValue?: number): void {
  * @param maxMarketValue MaxMarketValue to generate the range of colors. Default is Infinity.
  * @returns The number provided represented as a string with colors.
  */
-function marketValueStr(n: number, maxMarketValue = Infinity): string {
+function marketValueStr(n: number, maxMarketValue: number): string {
   const colorOffset = Math.round((n*255)/maxMarketValue)
   return chalk.rgb(255 - colorOffset, colorOffset, 0)(n)
 }

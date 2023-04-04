@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { isSystemError } from "./errors";
 
 let currentLock: string | undefined = undefined
 
@@ -9,10 +10,19 @@ let currentLock: string | undefined = undefined
  */
 export function lock(pathToDirLock: string): void {
   if (currentLock !== undefined) {
-    throw new Error("trying to use more than one lock on the same program");
+    throw new Error("trying to use more than one lock on the same program")
   }
-  currentLock = path.join(pathToDirLock, ".lock")
-  fs.closeSync(fs.openSync(currentLock, "wx"))
+
+  const lockPath = path.join(pathToDirLock, ".lock")
+  try {
+    fs.closeSync(fs.openSync(lockPath, "wx"))
+  } catch (e: unknown) {
+    if (isSystemError(e) && e.syscall === "open" && e.code === "EEXIST") {
+      throw new Error(`directory is already locked: file ${e.path} exists`);
+    }
+    throw e
+  }
+  currentLock = lockPath
 }
 
 /**
