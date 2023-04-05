@@ -154,7 +154,7 @@ describe("Storage", () => {
   it("Test remove", () => {
     const s = new Storage("funkos")
     expect(() => s.remove("miguel", "JOJO2_Joseph")).not.to.throw()
-    expect(() => s.remove("miguel", "JOJO2_Joseph")).to.throw("ENOENT: no such file or directory, stat 'funkos/miguel/JOJO2_Joseph.json'")
+    expect(() => s.remove("miguel", "JOJO2_Joseph")).to.throw(/ENOENT: no such file or directory, l?stat \'funkos\/miguel\/JOJO2_Joseph.json\'/)
     unlock()
   })
 
